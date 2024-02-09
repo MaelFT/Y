@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import Icon from '../assets/img/icon.png';
-import LoginBg from '../assets/img/login-bg.png';
+import LoginBg from '../assets/img/login_bg.png';
+import Google from '../assets/img/google.svg';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -44,25 +44,36 @@ const Login = () => {
   };
 
   return (
-    <section className='login-section'>
-      <div className='login-div'>
-        <img src={Icon} alt="Icon"></img>
-        <h1>Create a new account</h1>
-        <form className='login-form' onSubmit={(e) => { e.preventDefault(); submitForm(); }}>
-          <div>
-            <input type="text" name="username" placeholder="Username" required onChange={handleChange} />
-            <input type="text" name="full_name" placeholder="Full Name" required onChange={handleChange} />
-          </div>
-          <input type="email" name="email" placeholder="Email" required onChange={handleChange} />
-          <input type="password" name="password" placeholder="Password" required onChange={handleChange} />
-          <input type="password" name="confirm_password" placeholder="Confirm password" required onChange={handleChange} />
-          <button type="submit">Register</button>
-        </form>
-        {error && <p style={{ color: errorColor }}>{error}</p>}
-        <p>Already a member ? <a href="/login">Log in</a></p>
+    <section className='flex bg-[#F4F4F4]'>
+      <div className='flex-1 overflow-hidden shadow-md transform rotate-1 origin-right'>
+        <img className='object-cover object-center w-full h-full' src={LoginBg} alt="login background"></img>
       </div>
-      <img src={LoginBg} alt="Login Background" className='background-login-image'></img>
-      <p className='copyright'>© Copyright 2023 YMedia</p>
+      <div className='relative flex flex-col flex-1 h-screen justify-center text-center text-black'>
+        <h1 className='font-bold text-5xl'>Create an account</h1>
+        <p>Enter your details to create an account</p>
+        <form className='flex flex-col mx-32 mt-8' onSubmit={(e) => { e.preventDefault(); submitForm(); }}>
+          <label className='text-left block text-lg' htmlFor="username">Username</label>
+          <input className='input w-full bg-[#EEEEEE] mb-4' type="text" name="username" placeholder="Enter your username" required onChange={handleChange} />
+          <label className='text-left block text-lg' htmlFor="email">Email</label>
+          <input className='input w-full bg-[#EEEEEE] mb-4' type="email" name="email" placeholder="Enter your email" required onChange={handleChange} />
+          <label className='text-left block text-lg' htmlFor="password">Password</label>
+          <input className='input w-full bg-[#EEEEEE] mb-4' type="password" name="password" placeholder="Enter your password" required onChange={handleChange} />
+          <label className='text-left block text-lg' htmlFor="confirm_password">Confirm password</label>
+          <input className='input w-full bg-[#EEEEEE] mb-4' type="password" name="confirm_password" placeholder="Enter your confirm password" required onChange={handleChange} />
+          <div className='flex justify-between'>
+            <label className='mb-4 label cursor-pointer'>
+              <input className='checkbox' type='checkbox' id='remember' name='remember' />
+              <span className='label-text ml-2 text-base' htmlFor="remember">Remember me</span>
+            </label>
+            <p></p>
+          </div>
+          <button className='btn btn-wide btn-neutral text-white font-bold bg-black hover:bg-[#2D2D2D]' type="submit">Sign up</button>
+        </form>
+
+        <button className='btn btn-outline font-bold mx-32 my-4 hover:bg-black hover:border-none' type="submit"><img className='w-6 h-8' src={Google} alt='logo google'></img>Sign up with google</button>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        <p className='absolute bottom-6 inset-x-1/4'>Already a member ? <a className='text-[#00ACFF] font-bold' href="/login">Sign in</a></p>
+      </div>
     </section>
   );
 };
