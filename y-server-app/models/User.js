@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
   location: String,
   date_joined: { type: Date, default: Date.now },
   profile_image_url: String,
+  banner_image_url: String,
 });
 
 userSchema.statics.login = async function (username, password) {

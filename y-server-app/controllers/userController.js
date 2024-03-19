@@ -6,12 +6,14 @@ const userController = {
       const {
         username,
         email,
-        password,
-        full_name,
+          password,
         bio,
         location,
         profile_image_url,
+        banner_image_url, // Include banner_image_url from the request body
       } = req.body;
+
+      const full_name = username
 
       const newUser = new User({
         username,
@@ -21,6 +23,7 @@ const userController = {
         bio,
         location,
         profile_image_url,
+        banner_image_url, // Include banner_image_url when creating the new user
       });
 
       await newUser.save();

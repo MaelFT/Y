@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import LoginBg from '../assets/img/login_bg.png';
 import Google from '../assets/img/google.svg';
+import Eye from '../assets/img/eye.svg'
 import checkAuth from '../utils/authFunctions';
 import { useNavigate } from 'react-router-dom';
+import GoogleLogin from 'react-google-login';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -13,6 +15,10 @@ const Login = () => {
   });
 
   const [error, setError] = useState(null);
+
+  const responseGoogle = (response) => {
+    console.log(response);
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,13 +33,23 @@ const Login = () => {
       }
     };
     fetchData();
+    // eslint-disable-next-line
   }, []);
-
+  
   const handleChange = (e) => {
     setLoginData({
       ...loginData,
       [e.target.name]: e.target.value
     });
+  };
+
+  const showPassword = () => {
+    const passwordInput = document.getElementById('password');
+    if (passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+    } else {
+      passwordInput.type = 'password';
+    }
   };
 
   const handleLogin = async () => {
@@ -71,7 +87,12 @@ const Login = () => {
           <label className='text-lg' htmlFor="username">Email</label>
           <input className='input w-full bg-[#EEEEEE] mb-4' type="text" name='username' id='username' placeholder="Enter your email" required onChange={handleChange} />
           <label className='text-lg' htmlFor="password">Password</label>
-          <input className='input w-full bg-[#EEEEEE] mb-4' type="password" name='password' id='password' placeholder="Enter your password" required onChange={handleChange} />
+          <div className="relative">
+            <input className='input w-full bg-[#EEEEEE] mb-4 pr-10' type="password" name='password' id='password' placeholder="Enter your password" required onChange={handleChange} />
+            <div style={{ pointerEvents: 'auto' }} className="absolute bottom-4 top-0 right-0 flex items-center mr-3 pointer-events-none">
+              <img className='cursor-pointer' onClick={showPassword} src={Eye} alt='eye'></img>
+            </div>
+          </div>          
           <div className='flex justify-between'>
             <label className='mb-4 label cursor-pointer'>
               <input className='checkbox' type='checkbox' id='remember' name='remember' />
@@ -81,6 +102,13 @@ const Login = () => {
           </div>
           <button className='btn btn-wide btn-neutral text-white font-bold bg-black hover:bg-[#2D2D2D]' type="submit">Sign in</button>
         </form>
+        {/* <GoogleLogin
+        clientId="276375941195-k692bbqmfsh7nq3agegolkgvc6qf3u84.apps.googleusercontent.com"
+        buttonText="Login with Google"
+        onSuccess={responseGoogle}
+        onFailure={responseGoogle}
+        cookiePolicy={'single_host_origin'}
+        /> */}
         <button className='btn btn-outline font-bold mx-32 my-4 hover:bg-black hover:border-none' type="submit"><img className='w-6 h-8' src={Google} alt='logo google'></img> Sign in with google</button>
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <p className='absolute bottom-6 inset-x-1/4'>Don't have an account ? <a className='text-[#00ACFF] font-bold' href="/register">Sign up</a></p>

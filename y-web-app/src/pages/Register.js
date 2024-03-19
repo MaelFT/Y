@@ -9,7 +9,6 @@ const Login = () => {
     email: '',
     password: '',
     confirm_password: '',
-    full_name: ''
   });
 
   const [error, setError] = useState(null);
@@ -45,7 +44,7 @@ const Login = () => {
 
   return (
     <section className='flex bg-[#F4F4F4]'>
-      <div className='flex-1 overflow-hidden shadow-md transform rotate-1 origin-right'>
+      <div className='flex-1 overflow-hidden shadow-2xl'>
         <img className='object-cover object-center w-full h-full' src={LoginBg} alt="login background"></img>
       </div>
       <div className='relative flex flex-col flex-1 h-screen justify-center text-center text-black'>
@@ -60,18 +59,11 @@ const Login = () => {
           <input className='input w-full bg-[#EEEEEE] mb-4' type="password" name="password" placeholder="Enter your password" required onChange={handleChange} />
           <label className='text-left block text-lg' htmlFor="confirm_password">Confirm password</label>
           <input className='input w-full bg-[#EEEEEE] mb-4' type="password" name="confirm_password" placeholder="Enter your confirm password" required onChange={handleChange} />
-          <div className='flex justify-between'>
-            <label className='mb-4 label cursor-pointer'>
-              <input className='checkbox' type='checkbox' id='remember' name='remember' />
-              <span className='label-text ml-2 text-base' htmlFor="remember">Remember me</span>
-            </label>
-            <p></p>
-          </div>
           <button className='btn btn-wide btn-neutral text-white font-bold bg-black hover:bg-[#2D2D2D]' type="submit">Sign up</button>
         </form>
 
         <button className='btn btn-outline font-bold mx-32 my-4 hover:bg-black hover:border-none' type="submit"><img className='w-6 h-8' src={Google} alt='logo google'></img>Sign up with google</button>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {error && <p style={{ color: errorColor }}>{error}</p>}
         <p className='absolute bottom-6 inset-x-1/4'>Already a member ? <a className='text-[#00ACFF] font-bold' href="/login">Sign in</a></p>
       </div>
     </section>
