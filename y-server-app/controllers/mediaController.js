@@ -20,8 +20,6 @@ const mediaController = {
     }
   },
 
-  // Add other CRUD operations as needed
-
 };
 
 module.exports = mediaController;

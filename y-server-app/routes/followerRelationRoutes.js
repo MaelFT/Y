@@ -4,6 +4,4 @@ const followerRelationController = require('../controllers/followerRelationContr
 
 router.post('/create-follower-relation', followerRelationController.createFollowerRelation);
 
-// Add other CRUD routes as needed
-
 module.exports = router;

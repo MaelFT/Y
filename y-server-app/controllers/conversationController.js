@@ -17,9 +17,6 @@ const conversationController = {
       res.status(500).json({ status: 'error', message: 'Error creating conversation' });
     }
   },
-
-  // Add other CRUD operations as needed
-
 };
 
 module.exports = conversationController;

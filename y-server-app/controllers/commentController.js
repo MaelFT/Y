@@ -68,7 +68,6 @@ const commentController = {
       res.status(500).json({ status: 'error', message: 'Error deleting comment' });
     }
   },
-
 };
 
 module.exports = commentController;

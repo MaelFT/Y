@@ -1,13 +1,16 @@
 const express = require('express');
 const router = express.Router();
+const auth = require("../auth");
 const userController = require('../controllers/userController');
 
-router.post('/create-user', userController.createUser);
-
+router.post('/register', userController.register);
 router.post('/login', userController.login);
 
-router.post('/logout', userController.logout);
-
-router.get('/check-auth', userController.checkAuth);
+router.get('/auth-endpoint', auth, (req, res) => {
+    res.json({ message: "You are authorized to access me" });
+});
+router.get('/free-endpoint', (req, res) => {
+    res.json({ message: "You are free to access me anytime" });
+});
 
 module.exports = router;

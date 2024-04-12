@@ -20,8 +20,6 @@ const messageController = {
     }
   },
 
-  // Add other CRUD operations as needed
-
 };
 
 module.exports = messageController;

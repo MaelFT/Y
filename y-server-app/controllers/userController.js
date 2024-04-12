@@ -1,73 +1,83 @@
 const User = require('../models/User');
+const jwt = require("jsonwebtoken");
+const bcrypt = require('bcrypt');
 
 const userController = {
-  createUser: async (req, res) => {
+  register: async (req, res) => {
     try {
-      const {
-        username,
-        email,
-          password,
-        bio,
-        location,
-        profile_image_url,
-        banner_image_url, // Include banner_image_url from the request body
-      } = req.body;
-
-      const full_name = username
+      const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
       const newUser = new User({
-        username,
-        email,
-        password,
-        full_name,
-        bio,
-        location,
-        profile_image_url,
-        banner_image_url, // Include banner_image_url when creating the new user
+        email: req.body.email,
+        username: req.body.username,
+        full_name: req.body.username,
+        password: hashedPassword,
       });
 
-      await newUser.save();
+      const savedUser = await newUser.save();
 
-      res.status(201).json({ status: 'check', message: 'Utilisateur créé avec succès' });
+      res.status(201).send({
+        status: 'success',
+        message: "User Created Successfully",
+        user: savedUser,
+      });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ status: 'error', message: 'Erreur lors de la création de l\'utilisateur' });
+      console.error('Error creating user:', error);
+      res.status(500).send({
+        status: 'error',
+        message: "Error creating user",
+        error: error.message,
+      });
     }
   },
-
   login: async (req, res) => {
-    const { username, password } = req.body;
     try {
-      const user = await User.login(username, password);
+      User.findOne({ email: req.body.email })
+      .then((user)=>{
+        bcrypt.compare(req.body.password, user.password)
+        .then((passwordCheck) => {
+              if(!passwordCheck) {
+                return res.status(400).send({
+                  message: "Passwords does not match",
+                  error,
+                })
+              }
+              const token = jwt.sign(
+                {
+                  userId: user._id,
+                  userEmail: user.email,
+                },
+                process.env.JWT_SECRET,
+                { expiresIn: "24h" }
+              );
 
-      if (user) {
-        req.session.authenticated = true;
-        req.session.username = username;
-        res.json({ message: 'Login successful' });
-        console.log("\n\n", req.session)
-      } else {
-        res.status(401).json({ error: 'Invalid credentials' });
-      }
+              res.status(200).send({
+                message: "Login Successful",
+                email: user.email,
+                token,
+              });
+            })
+          })
+        .catch((error) => {
+          res.status(400).send({
+            message: "Passwords does not match",
+            error,
+          });
+      })
+      .catch((e) => {
+        res.status(404).send({
+          message: "Email not found",
+          e,
+        });
+      });
     } catch (error) {
-      console.error('Error during login:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
+      console.error('Error logging in user:', error);
+      res.status(500).send({
+        status: 'error',
+        message: 'Error logging in user',
+        error: error.message,
+      });
     }
-  },
-
-  checkAuth: (req, res, next) => {
-    console.log(req.session)
-    if (req.session.authenticated) {
-      res.status(200).json({logged: true, username: req.session.username})
-      next();
-    } else {
-      res.status(401).send('Unauthorized');
-    }
-  },
-
-  logout: (req, res) => {
-    req.session.destroy(() => {
-      res.send('Logout successful!');
-    });
   },
 };
 

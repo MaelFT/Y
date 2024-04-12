@@ -22,8 +22,6 @@ const notificationController = {
     }
   },
 
-  // Add other CRUD operations as needed
-
 };
 
 module.exports = notificationController;

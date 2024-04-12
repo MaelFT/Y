@@ -27,9 +27,6 @@ const hashtagController = {
       res.status(500).json({ status: 'error', message: 'Error fetching hashtags' });
     }
   },
-
-  // Add other CRUD operations as needed
-
 };
 
 module.exports = hashtagController;

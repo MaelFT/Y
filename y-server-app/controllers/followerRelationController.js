@@ -18,9 +18,6 @@ const followerRelationController = {
       res.status(500).json({ status: 'error', message: 'Error creating follower relation' });
     }
   },
-
-  // Add other CRUD operations as needed
-
 };
 
 module.exports = followerRelationController;
