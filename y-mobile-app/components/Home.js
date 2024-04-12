@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
 import { useFonts } from 'expo-font';
 
-export default function HomeScreen({ navigation }) {
+export default function Home({ navigation }) {
     const [fontsLoaded] = useFonts({
         'Roboto-Black': require('../assets/fonts/Roboto/Roboto-Black.ttf'),
         'Roboto-Regular': require('../assets/fonts/Roboto/Roboto-Regular.ttf'),

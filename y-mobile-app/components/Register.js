@@ -12,7 +12,7 @@ const loadFonts = () => {
     });
 };
 
-export default function Registerscreen({ navigation }) {
+export default function Register({ navigation }) {
     useEffect(() => {
         const loadApp = async () => {
           await loadFonts();

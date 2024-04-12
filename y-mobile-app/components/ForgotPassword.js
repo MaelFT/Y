@@ -1,7 +1,6 @@
 import React from 'react'
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native";
-import BouncyCheckbox from "react-native-bouncy-checkbox";
 import * as Font from 'expo-font';
 
 const loadFonts = () => {
@@ -12,7 +11,7 @@ const loadFonts = () => {
     });
 };
 
-export default function Loginscreen({ navigation }) {
+export default function ForgotPassword() {
     useEffect(() => {
         const loadApp = async () => {
           await loadFonts();
@@ -21,14 +20,16 @@ export default function Loginscreen({ navigation }) {
         loadApp();
     }, []);
 
+    const [email, setEmail] = useState();
+
   return (
     <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.container}
     >
         <View style={styles.container}>
-            <Text style={styles.title}>Welcome back</Text>
-            <Text style={styles.subTitle}>Enter your email and password to access your account</Text>
+            <Text style={styles.title}>Forgot password</Text>
+            <Text style={styles.subTitle}>Please enter your email address to request a password reset</Text>
             <View>
                 <Text style={styles.label}>Email</Text>
                 <TextInput
@@ -36,39 +37,10 @@ export default function Loginscreen({ navigation }) {
                     textAlign='center'
                     keyboardType='email-address'
                     style={styles.input}
+                    onChangeText={(text) => setEmail(text)}
                 />
-                <Text style={styles.label}>Password</Text>
-                <TextInput
-                    placeholder='Enter your password'
-                    textAlign='center'
-                    secureTextEntry={true}
-                    style={styles.input}
-                />
-                <View style={styles.flexRow}>
-                    <View>
-                        <BouncyCheckbox
-                            size={25}
-                            fillColor="#00ACFF"
-                            unfillColor="#EEEEEE"
-                            iconStyle={{ borderColor: "#00ACFF"}}
-                            text="Remember me"
-                            textStyle={{ fontFamily: "Roboto-Regular", fontSize: 16, color: "#000000", textDecorationLine: "none" }}
-                            disableTextDecoration={true}
-                        />
-                    </View>
-                    <Text style={{fontFamily: "Roboto-Regular", fontSize: 16}}>Forgot password?</Text>
-                </View>
-                <TouchableOpacity style={styles.submitButton} onPress={() => navigation.navigate("Feed")}>
-                    <Text style={styles.buttonTextWhite}>Sign In</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.googleButton}>
-                    <Text style={styles.buttonTextWhite}>Sign In With Google</Text>
-                </TouchableOpacity>
-            </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ paddingTop: 30 }}>Don’t have an account ? </Text>
-                <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-                    <Text style={[styles.blueText, { paddingTop: 30 }]}>Sign up</Text>
+                <TouchableOpacity style={styles.submitButton}>
+                    <Text style={styles.buttonTextWhite}>Send reset password</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -135,6 +107,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
+        marginBottom: 100,
         alignItems: 'center',
     },
     title: {
