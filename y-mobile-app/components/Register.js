@@ -1,7 +1,8 @@
 import React from 'react'
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import axios from 'axios';
 import * as Font from 'expo-font';
 
 const loadFonts = () => {
@@ -17,9 +18,30 @@ export default function Register({ navigation }) {
         const loadApp = async () => {
           await loadFonts();
         };
-    
         loadApp();
     }, []);
+
+    const [username, setUsername] = useState();
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
+    const [confirmPassword, setConfirmPassword] = useState();
+
+    const register = () => {
+        if (password !== confirmPassword) {
+            console.log("Passwords do not match")
+            return;
+        }
+        axios.post('http://192.168.0.29:5000/users/register', {
+            email: email,
+            username: username,
+            password: password
+        }).then((response) => {
+            console.log(response.data['message'])
+            navigation.navigate("Login");
+        }).catch((error) => {
+            console.log(error);
+        })
+    }
 
   return (
     <View style={styles.container}>
@@ -32,6 +54,7 @@ export default function Register({ navigation }) {
                 textAlign='center'
                 keyboardType='default'
                 style={styles.input}
+                onChangeText={(text) => setUsername(text)}
             />
             <Text style={styles.label}>Email</Text>
             <TextInput
@@ -39,6 +62,7 @@ export default function Register({ navigation }) {
                 textAlign='center'
                 keyboardType='email-address'
                 style={styles.input}
+                onChangeText={(text) => setEmail(text)}
             />
             <Text style={styles.label}>Password</Text>
             <TextInput
@@ -46,6 +70,7 @@ export default function Register({ navigation }) {
                 textAlign='center'
                 secureTextEntry={true}
                 style={styles.input}
+                onChangeText={(text) => setPassword(text)}
             />
             <Text style={styles.label}>Confirm password</Text>
             <TextInput
@@ -53,6 +78,7 @@ export default function Register({ navigation }) {
                 textAlign='center'
                 secureTextEntry={true}
                 style={styles.input}
+                onChangeText={(text) => setConfirmPassword(text)}
             />
             <View style={styles.flexRow}>
                 <View>
@@ -68,7 +94,7 @@ export default function Register({ navigation }) {
                 </View>
                 <Text style={{fontFamily: "Roboto-Regular", fontSize: 16}}>Forgot password?</Text>
             </View>
-            <TouchableOpacity style={styles.submitButton}>
+            <TouchableOpacity style={styles.submitButton} onPress={() => register()}>
                 <Text style={styles.buttonTextWhite}>Sign Up</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.googleButton}>

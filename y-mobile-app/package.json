@@ -9,15 +9,18 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-native-community/checkbox": "^0.5.17",
     "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/native": "^6.1.16",
     "@react-navigation/native-stack": "^6.9.25",
     "axios": "^1.6.8",
     "axios-auth-refresh": "^3.3.6",
+    "core-js": "^3.37.0",
     "expo": "~50.0.11",
     "expo-font": "^11.10.3",
     "expo-status-bar": "~1.11.1",
+    "jwt-decode": "^4.0.0",
     "react": "18.2.0",
     "react-native": "^0.73.6",
     "react-native-bouncy-checkbox": "^3.0.7",

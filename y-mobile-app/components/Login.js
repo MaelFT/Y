@@ -1,6 +1,6 @@
 import React from 'react'
 import { useEffect, useState } from 'react';
-import { storeToken } from './tools/Auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
@@ -12,6 +12,14 @@ const loadFonts = () => {
         'Roboto-Regular': require('../assets/fonts/Roboto/Roboto-Regular.ttf'),
         'Roboto-Light': require('../assets/fonts/Roboto/Roboto-Light.ttf'),
     });
+};
+
+const storeToken = async (token) => {
+    try {
+        await AsyncStorage.setItem('token', token);
+    } catch (error) {
+        console.error('Error storing token:', error);
+    }
 };
 
 export default function Login({ navigation }) {
@@ -27,16 +35,15 @@ export default function Login({ navigation }) {
     const [password, setPassword] = useState();
 
     const authenthication = () => {
-        // axios.post('http://192.168.0.29:5000/users/login', {
-        //     email: email,
-        //     password: password
-        // }).then((response) => {
-        //     // storeToken(response.data.token);
-        //     navigation.navigate("Feed");
-        // }).catch((error) => {
-        //     console.log(error);
-        // })
-        navigation.navigate("Feed");
+        axios.post('http://192.168.0.29:5000/users/login', {
+            email: email,
+            password: password
+        }).then((response) => {
+            storeToken(response.data.token);
+            navigation.navigate("Feed");
+        }).catch((error) => {
+            console.log(error);
+        })
     }
 
 
