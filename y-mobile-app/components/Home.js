@@ -1,6 +1,20 @@
 import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFonts } from 'expo-font';
+
+const getToken = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      if (token !== null) {
+        return true;
+      }
+    } catch (error) {
+      console.log("Erreur lors de la récupération du token :", error);
+      return null;
+    }
+  };
+  
 
 export default function Home({ navigation }) {
     const [fontsLoaded] = useFonts({
@@ -8,9 +22,12 @@ export default function Home({ navigation }) {
         'Roboto-Regular': require('../assets/fonts/Roboto/Roboto-Regular.ttf'),
         'Roboto-Light': require('../assets/fonts/Roboto/Roboto-Light.ttf'),
       });
-      if (!fontsLoaded) {
-        return <Text>Loading...</Text>;
-      }
+
+    getToken().then((token) => {
+        if (token) {
+            navigation.navigate("Feed");
+        }
+    });
 
   return (
     <View style={styles.container}>

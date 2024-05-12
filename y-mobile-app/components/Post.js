@@ -11,9 +11,7 @@ export default function Post({ navigation }) {
     'Roboto-Regular': require('../assets/fonts/Roboto/Roboto-Regular.ttf'),
     'Roboto-Light': require('../assets/fonts/Roboto/Roboto-Light.ttf'),
   });
-  if (!fontsLoaded) {
-    return <Text>Loading...</Text>;
-  }
+
 
   const [comment, setComment] = useState("");
 

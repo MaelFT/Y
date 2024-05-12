@@ -11,10 +11,6 @@ export default function Chat({ navigation }) {
     'Roboto-Light': require('../assets/fonts/Roboto/Roboto-Light.ttf'),
   });
 
-  if (!fontsLoaded) {
-    return <Text>Loading...</Text>;
-  }
-
   return (
     <View style={{ flex: 1, display: "flex", alignItems: "center"}}>
         <View style={{display: "flex", width: "100%", height: "86%", justifyContent: "flex-end"}}>

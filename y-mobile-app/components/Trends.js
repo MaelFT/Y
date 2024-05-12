@@ -11,10 +11,6 @@ export default function Trends({ navigation }) {
     'Roboto-Light': require('../assets/fonts/Roboto/Roboto-Light.ttf'),
   });
 
-  if (!fontsLoaded) {
-    return <Text>Loading...</Text>;
-  }
-
   return (
     <View style={{ flex: 1, display: "flex", marginTop: 20}}>
         <View style={{marginHorizontal: 30}}>

@@ -10,9 +10,6 @@ const EditProfile = ({ navigation }) => {
     'Roboto-Regular': require('../assets/fonts/Roboto/Roboto-Regular.ttf'),
     'Roboto-Light': require('../assets/fonts/Roboto/Roboto-Light.ttf'),
   });
-  if (!fontsLoaded) {
-    return <Text>Loading...</Text>;
-  }
   return (
     <View style={styles.container}>
         <View>

@@ -12,10 +12,6 @@ export default function Notifications({ navigation }) {
     'Roboto-Light': require('../assets/fonts/Roboto/Roboto-Light.ttf'),
   });
 
-  if (!fontsLoaded) {
-    return <Text>Loading...</Text>;
-  }
-
   return (
     <View style={{ flex: 1, display: "flex", alignItems: "center", marginTop: 20}}>
         <View style={{width: "98%", display: "flex", flexDirection: "row", justifyContent: "space-around", alignItems: "center", backgroundColor: "#EBEBEB", padding: 4, borderRadius: 8}}>

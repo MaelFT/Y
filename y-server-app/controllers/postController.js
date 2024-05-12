@@ -30,6 +30,18 @@ const postController = {
     }
   },
 
+  getUserPosts: async (req, res) => {
+    try {
+      const userId = req.params.id;
+      const posts = await Post.find({ author: userId });
+
+      res.status(200).json({ status: 'success', data: posts });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ status: 'error', message: 'Error fetching posts' });
+    }
+  },
+
   updatePost: async (req, res) => {
     try {
       const postId = req.params.id;

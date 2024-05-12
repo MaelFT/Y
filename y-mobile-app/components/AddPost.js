@@ -1,10 +1,25 @@
 import React from "react";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity} from "react-native";
 import Svg, { Path } from 'react-native-svg';
 import { useFonts } from 'expo-font';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 
-export default function AddPost() {
+const getToken = async () => {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    if (token !== null) {
+      return token;
+    }
+  } catch (error) {
+    console.log("Erreur lors de la récupération du token :", error);
+    return null;
+  }
+};
+
+export default function AddPost({ navigation }) {
   const [fontsLoaded] = useFonts({
     'Roboto-Black': require('../assets/fonts/Roboto/Roboto-Black.ttf'),
     'Roboto-Bold': require('../assets/fonts/Roboto/Roboto-Bold.ttf'),
@@ -12,10 +27,37 @@ export default function AddPost() {
     'Roboto-Light': require('../assets/fonts/Roboto/Roboto-Light.ttf'),
   });
 
-  const [post, setPost] = useState('');
+  const [content, setContent] = useState('');
+  const [user, setUser] = useState();
+  const [username, setUsername] = useState();
+  const [fullName, setFullName] = useState();
 
-  if (!fontsLoaded) {
-    return <Text>Loading...</Text>;
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = await getToken();
+      const decodedToken = jwtDecode(token);
+      axios.get('http://192.168.0.29:5000/users/' + decodedToken['userId'])
+      .then((response) => {
+        setUser(response.data['user']);
+        setUsername(response.data['user']['username']);
+        setFullName(response.data['user']['full_name']);
+      }).catch((error) => {
+          console.log(error);
+      })
+    }
+    fetchData();
+  })
+  
+  const createPost = () => {
+    axios.post('http://192.168.0.29:5000/posts/create-post', {
+        content: content,
+        author: user
+    }).then((response) => {
+        console.log(response.data['message']);
+        navigation.navigate("Feed");
+    }).catch((error) => {
+        console.log(error);
+    })
   }
 
   return (
@@ -26,8 +68,8 @@ export default function AddPost() {
             <Image source={require('../assets/img/pp.png')} style={{width: 48, height: 48, borderRadius: 48}} />
             <View style={{display: "flex"}}>
               <View style={{display: "flex", flexDirection: "row", justifyContent: "start", width: "100%"}}>
-                <Text style={{fontFamily: "Roboto-Bold", marginHorizontal:6, fontSize:16}}>Urahara</Text>
-                <Text style={{fontFamily: "Roboto-Light", opacity: 0.5}}>@urahAra_</Text>
+                <Text style={{fontFamily: "Roboto-Bold", marginHorizontal:6, fontSize:16}}>{fullName}</Text>
+                <Text style={{fontFamily: "Roboto-Light", opacity: 0.5}}>@{username}</Text>
               </View>
               <TextInput
                 editable
@@ -35,15 +77,15 @@ export default function AddPost() {
                 numberOfLines={4}
                 autoFocus={true}
                 maxLength={256}
-                onChangeText={text => setPost(text)}
-                value={post}
+                onChangeText={text => setContent(text)}
+                value={content}
                 placeholder="What's on your mind?"
                 style={{fontFamily: "Roboto-Regular", marginHorizontal:6, fontSize:15, padding: 0, textAlign: "left",}}
               />
             </View>
           </View>
           <View>
-            <TouchableOpacity style={{backgroundColor: "#000000", borderRadius: 4, paddingHorizontal: 12, paddingVertical: 4, display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+            <TouchableOpacity onPress={() => createPost()} style={{backgroundColor: "#000000", borderRadius: 4, paddingHorizontal: 12, paddingVertical: 4, display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
                 <Text style={{color: "#FFFFFF", fontFamily: "Roboto-Black"}}>Post</Text>
                 <Svg
                   width={12}

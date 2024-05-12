@@ -1,6 +1,8 @@
 const express = require('express')
 const dotenv = require('dotenv')
 const connectDB = require('./config')
+const multer = require('multer');
+const path = require('path');
 const routes = require('./routes');
 
 dotenv.config()
@@ -27,6 +29,23 @@ app.use((req, res, next) => {
     );
     next();
 });
+
+/* Multer */
+const storage = multer.diskStorage({
+    destination: './uploads/',
+    filename: function (req, file, cb) {
+      cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({ storage });
+
+app.post('/upload', upload.single('image'), (req, res) => {
+    if (!req.file) {
+      return res.status(400).send('No files were uploaded.');
+    }
+    res.send(req.file.path);
+  });
   
 app.use('/', routes);
 

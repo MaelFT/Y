@@ -19,6 +19,22 @@ const mediaController = {
       res.status(500).json({ status: 'error', message: 'Error creating media' });
     }
   },
+  uploadImage: async (image) => {
+    const data = new FormData();
+    data.append('image', image);
+  
+    try {
+      const response = await fetch('http://localhost:5000/upload', {
+        method: 'POST',
+        body: data
+      });
+      const imageUrl = await response.text();
+      return imageUrl;
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      throw new Error('Error uploading image');
+    }
+  }
 
 };
 
